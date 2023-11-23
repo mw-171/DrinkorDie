@@ -1,0 +1,83 @@
+//ARDUINO MAIN CODE
+#include <LiquidCrystal.h>
+ // C++ code 
+//variables 
+bool var = false; 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int contrast = 10; 
+int timer = millis(); 
+int hr = 00; 
+int mn = 00;
+int sc = 00; 
+int tm = 0; 
+String time = "";
+
+
+void setup()
+ { 
+lcd.begin(16, 2); 
+pinMode(7, INPUT); 
+Serial.begin(9600); 
+pinMode(6, OUTPUT); 
+analogWrite(8, contrast); 
+digitalWrite(13, HIGH);
+lcd.print("drink water"); 
+//set cursor to second line 
+lcd.setCursor(0, 1); 
+//print the amount of time that has passed 
+lcd.print(time); 
+} 
+
+void(* resetFunc) (void) = 0; 
+
+void loop() 
+{ 
+
+//MICROBIT LINK CODE 
+//check if angle is greater than 45* and if var is true 
+
+if ((digitalRead(7) == HIGH) && 
+(var == true)) 
+{ 
+//turn var false and print water lcd.setCursor(0, 0); 
+var = false; 
+lcd.clear(); 
+Serial.println("yay water");
+lcd.print("yay water!"); 
+resetFunc(); 
+//call timer reset 
+} 
+//check if angle is less than 45* and if variable is false 
+
+else if ((digitalRead(7) == LOW) && (var == false))
+ { 
+//turn var true and print drink 
+lcd.setCursor(0, 0); 
+var = true; lcd.clear(); 
+Serial.println("drink water"); 
+lcd.print("drink water"); 
+} 
+
+else 
+{ 
+/if angle is greater than 45* and var is false wait 
+
+} 
+
+//CLOCK CODE
+tm = millis() / 1000;
+sc = tm; 
+mn = sc / 60; 
+hr = mn / 60; 
+//time = String(hr) + ":" + 
+String(mn) + ":" + String(sc); 
+time = "Last Sip: " + String(mn) + " min"; //set cursor to second line lcd.setCursor(0, 1);
+ //print the amount of time that has passed lcd.print(time); 
+if ((millis() / 1000)>= 300) // feed them for 20 seconds 
+{ 
+digitalWrite(6, HIGH); 
+} else { 
+digitalWrite(6,LOW);
+ } 
+
+}
